@@ -41,34 +41,32 @@ var app = {
         deviceElement.classList.add('received');
 
         // test camera
+        this.authorizeCamera()
+    },
+
+    authorizeCamera: function () {
         cordova.plugins.diagnostic.isCameraAuthorized(
             function (authorized) {
-                console.log("App is " + (authorized ? "authorized" : "denied") + " access to the camera");
                 if (!authorized) {
                     cordova.plugins.diagnostic.requestCameraAuthorization(
                         function (status) {
-                            console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
                             if (status == cordova.plugins.diagnostic.permissionStatus.GRANTED) {
                                 app.testCamera();
                             } else {
-                                app.receivedCamera(status);
+                                app.receivedCamera('Bad status: ' + status);
                             }
                         }, function (error) {
-                            console.error("The following error occurred: " + error);
-                            app.receivedCamera(error);
+                            // fail
+                            app.receivedCamera('Auth failed: ' + error);
                         }, false
                     );
                 } else {
                     app.testCamera();
                 }
             }, function (error) {
-                console.error("The following error occurred: " + error);
-                app.receivedCamera(error);
+                app.receivedCamera('Error occurred: ' + error);
             }, false
         );
-
-
-        //this.testGeo();
     },
 
     testCamera: function () {
@@ -97,31 +95,54 @@ var app = {
             cordova.plugins.barcodeScanner.scan(
                 function (result) {
                     if (result.cancelled || !result.text) {
-                        app.receivedCamera('Scanning failed');
+                        app.receivedCamera('Scanning Failed');
                     }
-                    else{
-                        app.receivedCamera(result.text);
-                        //app.testGeo();
+                    else {
+                        app.receivedCamera('Is Ready');
                     }
                 },
                 function (error) {
-                    app.receivedCamera('Scanning failed: ' + error);
+                    app.receivedCamera('Scanning Failed: ' + error);
                 }
             );
         }
         catch (err) {
-            console.log('Camera exception; ex=' + err);
-            app.receivedCamera(err);
+            app.receivedCamera('Camera exception: ' + err);
         }
     },
 
     receivedCamera: function (status) {
+        console.error("Camera status: " + status);
         var parentElement = document.getElementById('deviceready');
         var cameraElement = parentElement.querySelector('.camera');
 
         cameraElement.innerHTML = 'Camera: ' + status;
         cameraElement.classList.remove('listening');
         cameraElement.classList.add('received');
+
+        app.authorizeGeo();
+    },
+
+    authorizeGeo: function () {
+        cordova.plugins.diagnostic.isLocationAuthorized(function (authorized) {
+            if (!authorized) {
+                cordova.plugins.diagnostic.requestLocationAuthorization(function (status) {
+                    if (status === cordova.plugins.diagnostic.permissionStatus.GRANTED
+                        || status === cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE) {
+                        app.testGeo();
+                    }
+                    else {
+                        app.receivedGeo('Bad status: ' + status);
+                    }
+                }, function (error) {
+                    app.receivedGeo('Auth failed: ' + error);
+                }/*, cordova.plugins.diagnostic.locationAuthorizationMode.ALWAYS*/);
+            } else {
+                app.testGeo();
+            }
+        }, function (error) {
+            app.receivedGeo('Error occurred: ' + error);
+        });
     },
 
     testGeo: function () {
@@ -129,22 +150,20 @@ var app = {
             navigator.geolocation.getCurrentPosition(
                 function (position) {
                     // success
-                    console.log('Geo success; position=' + position);
-                    app.receivedGeo("is Ready");
+                    app.receivedGeo("Is Ready");
                 },
                 function (err) {
                     // fail
-                    console.log('Geo fail; err=' + err);
-                    app.receivedGeo(err);
+                    app.receivedGeo('Geo failed: ' + err);
                 });
         }
         catch (err) {
-            console.log('Geo exception; ex=' + err);
-            app.receivedGeo(err);
+            app.receivedGeo('Geo error: ' + err);
         }
     },
 
     receivedGeo: function (status) {
+        console.log('Geo status: ' + status);
         var parentElement = document.getElementById('deviceready');
         var geoElement = parentElement.querySelector('.geo');
 
