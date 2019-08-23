@@ -1,8 +1,15 @@
 {
     "libiconv.dylib": 1,
-    "AVFoundation.framework": 2,
+    "AVFoundation.framework": 4,
     "CoreVideo.framework": 1,
     "QuartzCore.framework": 1,
     "ImageIO.framework": 1,
-    "CoreLocation.framework": 2
+    "CoreLocation.framework": 3,
+    "CoreBluetooth.framework": 1,
+    "Photos.framework": 1,
+    "UserNotifications.framework": 1,
+    "Contacts.framework": 1,
+    "AddressBook.framework": 1,
+    "EventKit.framework": 2,
+    "CoreMotion.framework": 1
 }

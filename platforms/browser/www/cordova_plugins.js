@@ -46,7 +46,8 @@ module.exports.metadata =
     "cordova-plugin-barcodescanner": "0.7.4",
     "cordova-plugin-camera": "4.1.0",
     "cordova-plugin-geolocation": "4.0.2",
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova.plugins.diagnostic": "5.0.0"
 }
 // BOTTOM OF METADATA
 });

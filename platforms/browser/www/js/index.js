@@ -41,8 +41,32 @@ var app = {
         deviceElement.classList.add('received');
 
         // test camera
-        this.testCamera();
-        this.testGeo();
+        cordova.plugins.diagnostic.isCameraAuthorized(
+            function (authorized) {
+                console.log("App is " + (authorized ? "authorized" : "denied") + " access to the camera");
+                if (!authorized) {
+                    cordova.plugins.diagnostic.requestCameraAuthorization(
+                        function (status) {
+                            console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
+                            if (status == cordova.plugins.diagnostic.permissionStatus.GRANTED) {
+                                this.testCamera();
+                            } else {
+                                app.receivedCamera(status);
+                            }
+                        }, function (error) {
+                            console.error("The following error occurred: " + error);
+                            app.receivedCamera(error);
+                        }, false
+                    );
+                }
+            }, function (error) {
+                console.error("The following error occurred: " + error);
+                app.receivedCamera(error);
+            }, false
+        );
+
+
+        //this.testGeo();
     },
 
     testCamera: function () {

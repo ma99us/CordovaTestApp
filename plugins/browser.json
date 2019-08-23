@@ -18,6 +18,9 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "org.maggus.cordovatestapp"
+    },
+    "cordova.plugins.diagnostic": {
+      "PACKAGE_NAME": "org.maggus.cordovatestapp"
     }
   },
   "dependent_plugins": {
