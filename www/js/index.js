@@ -49,7 +49,7 @@ var app = {
                         function (status) {
                             console.log("Authorization request for camera use was " + (status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied"));
                             if (status == cordova.plugins.diagnostic.permissionStatus.GRANTED) {
-                                this.testCamera();
+                                app.testCamera();
                             } else {
                                 app.receivedCamera(status);
                             }
@@ -70,33 +70,46 @@ var app = {
     },
 
     testCamera: function () {
-        let opts = {
-            quality: 80,
-            destinationType: Camera.DestinationType.FILE_URI,
-            sourceType: Camera.PictureSourceType.CAMERA,
-            mediaType: Camera.MediaType.PICTURE,
-            encodingType: Camera.EncodingType.JPEG,
-            cameraDirection: Camera.Direction.BACK,
-            targetWidth: 300,
-            targetHeight: 400
-        };
+        // let opts = {
+        //     quality: 80,
+        //     destinationType: Camera.DestinationType.FILE_URI,
+        //     sourceType: Camera.PictureSourceType.CAMERA,
+        //     mediaType: Camera.MediaType.PICTURE,
+        //     encodingType: Camera.EncodingType.JPEG,
+        //     cameraDirection: Camera.Direction.BACK,
+        //     targetWidth: 300,
+        //     targetHeight: 400
+        // };
         try {
-            navigator.camera.getPicture(function (imgURI) {
-                // success
-                console.log('Camera success; imgURI=' + imgURI);
-                app.receivedCamera("is Ready");
-                app.testGeo();
-            }, function (msg) {
-                // fail
-                console.log('Camera fail; err=' + msg);
-                app.receivedCamera(msg);
-                app.testGeo();
-            }, opts);
+            // navigator.camera.getPicture(function (imgURI) {
+            //     // success
+            //     console.log('Camera success; imgURI=' + imgURI);
+            //     app.receivedCamera("is Ready");
+            //     app.testGeo();
+            // }, function (msg) {
+            //     // fail
+            //     console.log('Camera fail; err=' + msg);
+            //     app.receivedCamera(msg);
+            //     app.testGeo();
+            // }, opts);
+            cordova.plugins.barcodeScanner.scan(
+                function (result) {
+                    if (result.cancelled || !result.text) {
+                        app.receivedCamera("Scanning failed");
+                    }
+                    else{
+                        app.receivedCamera(result.text);
+                        //app.testGeo();
+                    }
+                },
+                function (error) {
+                    app.receivedCamera("Scanning failed: " + error);
+                }
+            );
         }
         catch (err) {
             console.log('Camera exception; ex=' + err);
             app.receivedCamera(err);
-            app.testGeo();
         }
     },
 
