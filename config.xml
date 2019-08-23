@@ -28,7 +28,10 @@
             <string>need location access to find stores nearby</string>
         </edit-config>
     </platform>
-    <plugin name="cordova-plugin-camera" spec="~4.1.0" />
+    <plugin name="cordova-plugin-camera" spec="~4.1.0">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="To scan barcodes"/>
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="To review barcodes"/>
+    </plugin>
     <plugin name="cordova-plugin-geolocation" spec="~4.0.2" />
     <plugin name="cordova-plugin-barcodescanner" spec="~0.7.4" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
