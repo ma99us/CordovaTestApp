@@ -95,7 +95,7 @@ var app = {
             cordova.plugins.barcodeScanner.scan(
                 function (result) {
                     if (result.cancelled || !result.text) {
-                        app.receivedCamera("Scanning failed");
+                        app.receivedCamera('Scanning failed');
                     }
                     else{
                         app.receivedCamera(result.text);
@@ -103,7 +103,7 @@ var app = {
                     }
                 },
                 function (error) {
-                    app.receivedCamera("Scanning failed: " + error);
+                    app.receivedCamera('Scanning failed: ' + error);
                 }
             );
         }
