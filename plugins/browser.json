@@ -1,0 +1,28 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-barcodescanner": {
+      "PACKAGE_NAME": "org.maggus.cordovatestapp"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "org.maggus.cordovatestapp"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "org.maggus.cordovatestapp"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.maggus.cordovatestapp"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-compat": {
+      "PACKAGE_NAME": "org.maggus.cordovatestapp"
+    }
+  }
+}
