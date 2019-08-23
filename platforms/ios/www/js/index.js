@@ -58,6 +58,8 @@ var app = {
                             app.receivedCamera(error);
                         }, false
                     );
+                } else {
+                    app.testCamera();
                 }
             }, function (error) {
                 console.error("The following error occurred: " + error);
